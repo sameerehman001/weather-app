@@ -22,6 +22,7 @@ export default class Searchbar extends React.Component {
   render() {    
     const location = this.props.location;
     const temp = "this.state.temp";
+    // const locstion = this.state.location;
 
     return (
       <div>
