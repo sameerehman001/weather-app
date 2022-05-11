@@ -5,17 +5,16 @@ export default class Searchbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location : "PAkistan",
+      location : "",
+      temp: ""
     };
 
-    getCurrentWeather('New York').then((res) => {
-      console.log('res ', res);
-    })
+    // getCurrentWeather('New York').then((res) => {
+    //   console.log('res ', res);
+    // })
   }
 
-  onInputChange(e){
-  
-
+  onInputChange(e){ 
     this.setState({
       location: e.target.value
     });
@@ -23,11 +22,20 @@ export default class Searchbar extends React.Component {
 
   onFormSubmit(e){
     e.preventDefault();
+
+    getCurrentWeather(this.state.location).then((res) => {
+      this.setState({
+        temp: res.data.main.temp
+      });
+      
+      // console.log('farenheit temp: ', res.data.main.temp);
+    });
   }
   
 
   render() {    
-    
+    const location = this.state.location;
+    const temp = this.state.temp;
 
     return (
       <div>
@@ -38,10 +46,13 @@ export default class Searchbar extends React.Component {
           <input 
           id="search" 
           name="search"
-          value={this.location}
+          value={location}
           onChange={(e)=> this.onInputChange(e)}
           ></input>
         </form>
+        <p>
+          {temp}
+        </p>
       </div>
     )
   }
