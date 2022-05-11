@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 export default class Searchbar extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ export default class Searchbar extends React.Component {
   
 
   render() {    
-    const locstion = this.state.location;
+    // const locstion = this.state.location;
 
     return (
       <div>
