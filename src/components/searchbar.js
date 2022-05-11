@@ -1,39 +1,42 @@
 import React from 'react'
+import { getCurrentWeather } from '../apis/open-weather.apis';
 
 export default class Searchbar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      location : "PAkistan",
-    };
+    
   }
-  onInputChange(e){
-    this.setState({
-      location: e.target.value
-    });
+
+  onInputChange(e){ 
+    this.props.inputChange(e);    
   }
-  onFormSubmit(e){
+
+  onFormSubmit(e){ 
     e.preventDefault();
+    this.props.formSubmitted();
+
+    
   }
   
 
   render() {    
+    const location = this.props.location;
+    const temp = "this.state.temp";
     // const locstion = this.state.location;
 
     return (
       <div>
         <form onSubmit={(e) => this.onFormSubmit(e) }>
-          <button type='submit'>
-            Search
-          </button>
+          <button type='submit'>Search</button>
           <input 
           id="search" 
           name="search"
-          value={this.location}
+          value={location}
           onChange={(e)=> this.onInputChange(e)}
           ></input>
         </form>
+        
       </div>
-    )
+    );
   }
 }
