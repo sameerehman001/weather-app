@@ -2,7 +2,8 @@ import './App.css';
 import Searchbar from './components/searchbar';
 import Currentweather from './components/current-weather';
 import React from 'react';
-import { getCurrentWeather } from './apis/open-weather.apis';
+import { getCurrentWeather, getForcast } from './apis/open-weather.apis';
+import ForcastWeather from './components/forcast-weather';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class App extends React.Component {
       temp: "",
       feelsLike:"",
       description:"",
-      icon:""
+      icon:"",
+      hourlyForecast: []
     };
 
     // getCurrentWeather('New York').then((res) => {
@@ -26,17 +28,26 @@ class App extends React.Component {
     });
   }
 
-  onFormSubmit(){
-    getCurrentWeather(this.state.location).then((res) => {
+  async onFormSubmit(){
+
+    const weatherRes = await getCurrentWeather(this.state.location);
+    const lat = weatherRes.data.coord.lat;
+    const lon = weatherRes.data.coord.lon;
+    const forecastRes = await getForcast(lat, lon);
+
+
+    // getCurrentWeather(this.state.location).then((res) => {
       this.setState({
-        temp: res.data.main.temp,
-        feelsLike: res.data.main.feels_like,
-        description: res.data.weather[0].main,
-        icon: res.data.weather[0].icon
+        temp: weatherRes.data.main.temp,
+        feelsLike: weatherRes.data.main.feels_like,
+        description: weatherRes.data.weather[0].main,
+        icon: weatherRes.data.weather[0].icon,
+        hourlyForecast: forecastRes.data.hourly
       });
       
-      // console.log('farenheit temp: ', res.data.main.temp);
-    });
+    //   // console.log('farenheit temp: ', res.data.main.temp);
+    // }
+    // );
   }
   render(){
     return (
@@ -53,6 +64,7 @@ class App extends React.Component {
         description={this.state.description}
         icon={this.state.icon}
         />
+        <ForcastWeather forecast={this.state.hourlyForecast} />
         </header>
         
       </div>
